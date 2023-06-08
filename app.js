@@ -5,8 +5,7 @@ require('./middlewares/db')
 const path = require('path')
 
 app.use('/images', express.static(path.join(__dirname, 'images')))
-app.use(express.json()) // gniiiii !!!!!!
-// app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 const setHeaders = require('./middlewares/headers')
 app.use(setHeaders)

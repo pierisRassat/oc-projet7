@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const bookSchema = mongoose.Schema({
-  userId: { type: String, unique: true, required: true },
+  userId: { type: String, required: true },
   title: { type: String, required: true },
   author: { type: String, required: true },
   imageUrl: { type: String },
@@ -15,6 +15,8 @@ const bookSchema = mongoose.Schema({
   ],
   averageRating: { type: Number, required: true },
 })
+
+bookSchema.index({ 'ratings.userId': 1 }, { unique: false })
 
 module.exports = mongoose.model('Book', bookSchema)
 
