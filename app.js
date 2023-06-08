@@ -20,11 +20,5 @@ app.use('/api', userRoutes)
 const bookRoutes = require('./routes/books')
 app.use('/api/books', bookRoutes)
 
-// const bookId = require('./routes/bookId')
-
-// app.use('/api/books/:id', bookId)
-// app.use('/api/users', users)
-
-
 module.exports = app
 

@@ -2,11 +2,24 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const User = require('../models/modUser')
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const passwordRegex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/
+
 exports.signup = (req, res, next) => {
-  bcrypt.hash(req.body.password, 10)
+  const { email, password } = req.body
+
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' })
+  }
+
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({ message: 'Password must contain at least one digit and one uppercase letter, and be at least 8 characters long' })
+  }
+
+  bcrypt.hash(password, 10)
     .then(hash => {
       const user = new User({
-        email: req.body.email,
+        email: email,
         password: hash
       })
       user.save()
