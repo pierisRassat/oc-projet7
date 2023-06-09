@@ -8,3 +8,4 @@ const userSchema = mongoose.Schema({
 
 userSchema.plugin(uniqueValidator)
 module.exports = mongoose.model('User', userSchema)
+

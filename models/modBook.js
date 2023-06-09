@@ -16,7 +16,5 @@ const bookSchema = mongoose.Schema({
   averageRating: { type: Number, required: true },
 })
 
-bookSchema.index({ 'ratings.userId': 1 }, { unique: false })
-
 module.exports = mongoose.model('Book', bookSchema)
 

@@ -5,7 +5,7 @@ const User = require('../models/modUser')
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const passwordRegex = /^(?=.*\d)(?=.*[A-Z]).{8,}$/
 
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
   const { email, password } = req.body
 
   if (!emailRegex.test(email)) {
@@ -29,7 +29,7 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }))
 }
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
   User.findOne({ email: req.body.email })
     .then(user => {
       if (!user) {

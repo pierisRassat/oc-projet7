@@ -10,9 +10,6 @@ app.use(express.json())
 const setHeaders = require('./middlewares/headers')
 app.use(setHeaders)
 
-const testRoutes = require('./routes/tests')
-app.use('/api/tests', testRoutes)
-
 const userRoutes = require('./routes/users')
 app.use('/api', userRoutes)
 

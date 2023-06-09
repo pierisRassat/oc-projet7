@@ -1,6 +1,6 @@
 const sharp = require('sharp')
 const path = require('path')
-
+const fs = require('fs')
 
 const imageOptimizerMiddleware = async (req, res, next) => {
   if (req.file) {
@@ -16,11 +16,15 @@ const imageOptimizerMiddleware = async (req, res, next) => {
       await sharp(req.file.path)
         .toFormat('webp')
         .webp({ quality: 80 })
-        .resize(500) // moved to 500
+        .resize(500)
         .toFile(convertedFilePath)
 
       req.file.filename = convertedFilename
-      // delete jpg
+      fs.unlink(req.file.path, (error) => {
+        if (error) {
+          console.error( error)
+        }
+      })
 
       next()
     } catch (error) {
