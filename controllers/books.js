@@ -1,12 +1,30 @@
 const Book = require('../models/modBook')
 const fs = require('fs')
 
-// TODO: test inputs!
-
 exports.createBook = (req, res) => {
   const bookObject = JSON.parse(req.body.book)
   delete bookObject._id
 
+  if (!bookObject) {
+    return res.status(400).json({ error: 'Dataset is empty!' })
+  }
+
+  if (typeof(bookObject) !== 'object') {
+    return res.status(400).json({ error: 'Dataset is not an object.' })
+  }
+
+  if (
+    !bookObject.userId ||
+    !bookObject.title ||
+    !bookObject.author ||
+    !bookObject.year ||
+    !bookObject.genre ||
+    !bookObject.ratings ||
+    !bookObject.averageRating
+  ) {
+    return res.status(400).json({ error: 'All fields are required.' })
+  }
+  
   const book = new Book({
     ...bookObject,
     userId: req.auth.userId,
@@ -15,7 +33,7 @@ exports.createBook = (req, res) => {
 
   book.save()
     .then(() => {
-      res.status(201).json({ message: 'Livre enregistré !' })
+      res.status(201).json({ message: 'Book registred!' })
     })
     .catch(error => {
       res.status(400).json({ error: error.message })
@@ -23,6 +41,15 @@ exports.createBook = (req, res) => {
 }
 
 exports.getOneBook = (req, res) => {
+  
+  if (!Book) {
+    res.status(400).json({ error: 'Is Empty!' })
+  }
+
+  if (typeof(Book) !== 'function') {
+    res.status(400).json({ error: 'Dataset is not a function' })
+  }
+
   Book.findOne({
     _id: req.params.id
   }).then(
@@ -118,6 +145,15 @@ exports.getAllBook = (req, res) => {
 exports.setBookRating = (req, res) => {
   const { id } = req.params
   const { userId, rating } = req.body
+
+  console.log(typeof(rating))
+  if (!rating) {
+    return res.status(400).json({ error: 'Rating must not be empty.' })
+  }
+
+  if (typeof(rating) !== 'number') {
+    return res.status(400).json({ error: 'Rating must be a number.' })
+  }
 
   if (rating < 0 || rating > 5) {
     return res.status(400).json({ error: 'Rating must be between 0 and 5.' })
